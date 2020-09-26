@@ -12,6 +12,8 @@ import axios, { AxiosResponse } from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
+import Box from "@material-ui/core/Box";
+
 
 const useMybusiness = () => {
   const createData = (
@@ -32,7 +34,7 @@ const useMybusiness = () => {
   });
   const classes = useStyles();
 
-  console.log(rows);
+
   useEffect(() => {
     var args = {
       data: {},
@@ -44,13 +46,12 @@ const useMybusiness = () => {
         'X-Requested-With': 'XMLHttpRequest'
       }
     }
-    axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query=セブンイレブン&language=ja&location=33.5980136,130.4659506", args)
+    axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query=セブンイレブン&language=ja&location=35.6957348,139.7073639", args)
       .then(function (response: AxiosResponse) {
         const newRows = [];
-        console.log(response.data['results']);
+        console.log(response.data['results'])
         for (let i = 0; i < response.data['results'].length; i++) {
           newRows.push(createData(response.data['results'][i]['name'], response.data['results'][i]['formatted_address'], response.data['results'][i]['rating'], response.data['results'][i]['place_id']));
-          console.log(response.data['results'][i]['name']);
         }
         setRows([...newRows]);
       })
@@ -70,13 +71,12 @@ const useMybusiness = () => {
           'X-Requested-With': 'XMLHttpRequest'
         }
       }
-      axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query="+ str +"&language=ja&location=33.5980136,130.4659506", args)
+      axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query="+ str +"&language=ja&location=35.6957348,139.7073639", args)
         .then(function (response: AxiosResponse) {
           const newRows = [];
-          console.log(response.data['results']);
+          console.log(response.data['results'])
           for (let i = 0; i < response.data['results'].length; i++) {
             newRows.push(createData(response.data['results'][i]['name'], response.data['results'][i]['formatted_address'], response.data['results'][i]['rating'], response.data['results'][i]['place_id']));
-            console.log(response.data['results'][i]['name']);
           }
           setRows([...newRows]);
         })
@@ -88,27 +88,29 @@ const useMybusiness = () => {
   return (
     <GenericTemplate title="テスト">
       <TableContainer component={Paper}>
-        <Grid container>
-          <Grid item xs={11}>
             <TextField
             id="standard-full-width"
             label="店舗名"
-            style={{ margin: 8 }}
+            style={{ margin: 8 ,width: '96%'}}
             placeholder="セブンイレブン"
             onChange={event => setStr(event.target.value)}
             margin="normal"
-            fullWidth
             InputLabelProps={{
               shrink: true,
             }}
           />
-          </Grid>
-          <Grid item xs={1} justify="flex-end">
+        <Grid container>
+          <Grid item xs={11}></Grid>
+          <Grid item xs={1}>
             <Button variant="contained" color="primary" onClick={handleOnClick}>
-              Search
+              検索
           </Button>
+          <Box p={1}></Box>
           </Grid>
         </Grid>
+        </TableContainer>
+        <Box p={2}></Box>
+        <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
