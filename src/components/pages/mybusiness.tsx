@@ -14,12 +14,12 @@ const useMybusiness = () => {
   const createData = (
     name: string,
     address: string,
-    rating: number,
+    rating: string,
     place_id: string
   ) => {
     return { name, address, rating, place_id };
   };
-  const [rows, setRows] = useState([createData("name", "address", 5, "test")]);
+  const [rows, setRows] = useState([{}]);
 
   const useStyles = makeStyles({
     table: {
@@ -42,10 +42,12 @@ const useMybusiness = () => {
     }
     axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query=ADlive&language=ja&location=33.5980136,130.4659506", args)
       .then(function (response: AxiosResponse) {
-        console.log(response.data['results']);
-        rows.push(createData(response.data['results'][4]['name'], response.data['results'][4]['formatted_address'], response.data['results'][4]['rating'], response.data['results'][4]['place_id']))
-        let newRows = rows;
-        setRows(newRows);
+        const newRows = [];
+        for(let i = 0; i < response.data['results'].length; i++){
+          newRows.push(createData(response.data['results'][i]['name'], response.data['results'][i]['formatted_address'], response.data['results'][i]['rating'], response.data['results'][i]['place_id']));
+          console.log(response.data['results'][i]['name']);
+        }
+        setRows([...newRows]);
       })
       .catch(function (error: AxiosResponse) {
         return error;
@@ -59,9 +61,9 @@ const useMybusiness = () => {
           <TableHead>
             <TableRow>
               <TableCell>タイトル</TableCell>
-              <TableCell align="right">住所</TableCell>
-              <TableCell align="right">評価</TableCell>
-              <TableCell align="right">ID</TableCell>
+              <TableCell align="left">住所</TableCell>
+              <TableCell align="left">評価</TableCell>
+              <TableCell align="left">ID</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -70,9 +72,9 @@ const useMybusiness = () => {
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
-                <TableCell align="right">{row.address}</TableCell>
-                <TableCell align="right">{row.rating}</TableCell>
-                <TableCell align="right">{row.place_id}</TableCell>
+                <TableCell align="left">{row.address}</TableCell>
+                <TableCell align="left">{row.rating}</TableCell>
+                <TableCell align="left">{row.place_id}</TableCell>
               </TableRow>
             ))}
           </TableBody>
