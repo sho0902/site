@@ -9,6 +9,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios, { AxiosResponse } from 'axios';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import { Grid } from '@material-ui/core';
 
 const useMybusiness = () => {
   const createData = (
@@ -20,6 +23,7 @@ const useMybusiness = () => {
     return { name, address, rating, place_id };
   };
   const [rows, setRows] = useState([{}]);
+  const [str, setStr] = useState("");
 
   const useStyles = makeStyles({
     table: {
@@ -40,10 +44,11 @@ const useMybusiness = () => {
         'X-Requested-With': 'XMLHttpRequest'
       }
     }
-    axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query=ADlive&language=ja&location=33.5980136,130.4659506", args)
+    axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query=セブンイレブン&language=ja&location=33.5980136,130.4659506", args)
       .then(function (response: AxiosResponse) {
         const newRows = [];
-        for(let i = 0; i < response.data['results'].length; i++){
+        console.log(response.data['results']);
+        for (let i = 0; i < response.data['results'].length; i++) {
           newRows.push(createData(response.data['results'][i]['name'], response.data['results'][i]['formatted_address'], response.data['results'][i]['rating'], response.data['results'][i]['place_id']));
           console.log(response.data['results'][i]['name']);
         }
@@ -52,11 +57,58 @@ const useMybusiness = () => {
       .catch(function (error: AxiosResponse) {
         return error;
       })
-    },[]);
+  }, []);
+
+  const handleOnClick = () => {
+      var args = {
+        data: {},
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET",
+          "Access-Control-Allow-Credentials": "true",
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      }
+      axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query="+ str +"&language=ja&location=33.5980136,130.4659506", args)
+        .then(function (response: AxiosResponse) {
+          const newRows = [];
+          console.log(response.data['results']);
+          for (let i = 0; i < response.data['results'].length; i++) {
+            newRows.push(createData(response.data['results'][i]['name'], response.data['results'][i]['formatted_address'], response.data['results'][i]['rating'], response.data['results'][i]['place_id']));
+            console.log(response.data['results'][i]['name']);
+          }
+          setRows([...newRows]);
+        })
+        .catch(function (error: AxiosResponse) {
+          return error;
+        })
+  };
 
   return (
     <GenericTemplate title="テスト">
       <TableContainer component={Paper}>
+        <Grid container>
+          <Grid item xs={11}>
+            <TextField
+            id="standard-full-width"
+            label="店舗名"
+            style={{ margin: 8 }}
+            placeholder="セブンイレブン"
+            onChange={event => setStr(event.target.value)}
+            margin="normal"
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          </Grid>
+          <Grid item xs={1} justify="flex-end">
+            <Button variant="contained" color="primary" onClick={handleOnClick}>
+              Search
+          </Button>
+          </Grid>
+        </Grid>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -67,7 +119,7 @@ const useMybusiness = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row:any) => (
+            {rows.map((row: any) => (
               <TableRow key={row.name}>
                 <TableCell component="th" scope="row">
                   {row.name}
