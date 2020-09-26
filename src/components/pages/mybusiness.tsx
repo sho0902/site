@@ -11,18 +11,15 @@ import Paper from "@material-ui/core/Paper";
 import axios, { AxiosResponse } from 'axios';
 
 const useMybusiness = () => {
-  const [rows, setRows] = useState(Array);
   const createData = (
     name: string,
     address: string,
     rating: number,
-    place_id: number
+    place_id: string
   ) => {
     return { name, address, rating, place_id };
   };
-
-  rows.push(createData("test", "test", 5.0, 1200000000));
-  rows.push(createData("test2","sample",3.0,111111111));
+  const [rows, setRows] = useState([createData("name", "address", 5, "test")]);
 
   const useStyles = makeStyles({
     table: {
@@ -31,9 +28,8 @@ const useMybusiness = () => {
   });
   const classes = useStyles();
 
+  console.log(rows);
   useEffect(() => {
-    rows.push(createData("test3","sample",4.0,111111111));
-    /*
     var args = {
       data: {},
       headers: {
@@ -47,14 +43,14 @@ const useMybusiness = () => {
     axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query=ADlive&language=ja&location=33.5980136,130.4659506", args)
       .then(function (response: AxiosResponse) {
         console.log(response.data['results']);
-        rows.push(createData(response.data['results'], "address", 5.0, 120000))
-        setRows(rows);
+        rows.push(createData(response.data['results'][4]['name'], response.data['results'][4]['formatted_address'], response.data['results'][4]['rating'], response.data['results'][4]['place_id']))
+        let newRows = rows;
+        setRows(newRows);
       })
       .catch(function (error: AxiosResponse) {
         return error;
       })
-    */
-    });
+    },[]);
 
   return (
     <GenericTemplate title="テスト">
