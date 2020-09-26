@@ -119,7 +119,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       overflow: "auto",
       flexDirection: "column",
-      paddingBottom: theme.spacing(5)
     },
     link: {
       textDecoration: "none",
