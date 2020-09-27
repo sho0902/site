@@ -3,8 +3,8 @@ import GenericTemplate from "../templates/GenericTemplate";
 
 const HomePage: React.FC = () => {
   return (
-    <GenericTemplate title="トップページ">
-      <>トップページ内容</>
+    <GenericTemplate title="ReactHooks">
+      <>このサービスはTypeScriptで書かれています。</>
     </GenericTemplate>
   );
 };

@@ -61,60 +61,60 @@ const useMybusiness = () => {
   }, []);
 
   const handleOnClick = () => {
-      var args = {
-        data: {},
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET",
-          "Access-Control-Allow-Credentials": "true",
-          'X-Requested-With': 'XMLHttpRequest'
-        }
+    var args = {
+      data: {},
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Credentials": "true",
+        'X-Requested-With': 'XMLHttpRequest'
       }
-      axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query="+ str +"&language=ja&location=35.6957348,139.7073639", args)
-        .then(function (response: AxiosResponse) {
-          const newRows = [];
-          console.log(response.data['results'])
-          for (let i = 0; i < response.data['results'].length; i++) {
-            newRows.push(createData(response.data['results'][i]['name'], response.data['results'][i]['formatted_address'], response.data['results'][i]['rating'], response.data['results'][i]['place_id']));
-          }
-          setRows([...newRows]);
-        })
-        .catch(function (error: AxiosResponse) {
-          return error;
-        })
+    }
+    axios.get('https://cors-anywhere.herokuapp.com/' + "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDTphZ8THxS0RZB7eL_QQMXEhWeS2oAVog&query=" + str + "&language=ja&location=35.6957348,139.7073639", args)
+      .then(function (response: AxiosResponse) {
+        const newRows = [];
+        console.log(response.data['results'])
+        for (let i = 0; i < response.data['results'].length; i++) {
+          newRows.push(createData(response.data['results'][i]['name'], response.data['results'][i]['formatted_address'], response.data['results'][i]['rating'], response.data['results'][i]['place_id']));
+        }
+        setRows([...newRows]);
+      })
+      .catch(function (error: AxiosResponse) {
+        return error;
+      })
   };
 
   return (
-    <GenericTemplate title="テスト">
+    <GenericTemplate title="Map">
       <TableContainer component={Paper}>
-            <TextField
-            id="standard-full-width"
-            label="店舗名"
-            style={{ margin: 8 ,width: '96%'}}
-            placeholder="セブンイレブン"
-            onChange={event => setStr(event.target.value)}
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+        <TextField
+          id="standard-full-width"
+          label="店舗名"
+          style={{ margin: 8, width: '96%' }}
+          placeholder="セブンイレブン"
+          onChange={event => setStr(event.target.value)}
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
         <Grid container>
           <Grid item xs={11}></Grid>
           <Grid item xs={1}>
             <Button variant="contained" color="primary" onClick={handleOnClick}>
               検索
           </Button>
-          <Box p={1}></Box>
+            <Box p={1}></Box>
           </Grid>
         </Grid>
-        </TableContainer>
-        <Box p={2}></Box>
-        <TableContainer component={Paper}>
+      </TableContainer>
+      <Box p={2}></Box>
+      <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>タイトル</TableCell>
+              <TableCell>店舗名</TableCell>
               <TableCell align="left">住所</TableCell>
               <TableCell align="left">評価</TableCell>
               <TableCell align="left">ID</TableCell>
@@ -128,7 +128,7 @@ const useMybusiness = () => {
                 </TableCell>
                 <TableCell align="left">{row.address}</TableCell>
                 <TableCell align="left">{row.rating}</TableCell>
-                <TableCell align="left">{row.place_id}</TableCell>
+                <TableCell align="left"><a target="_blank" href={`https://search.google.com/local/reviews?placeid=${row.place_id}`}>{row.place_id}</a></TableCell>
               </TableRow>
             ))}
           </TableBody>

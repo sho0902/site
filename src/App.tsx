@@ -1,15 +1,15 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 
 import mybusiness from "./components/pages/mybusiness";
-import test from "./components/pages/test";
+import home from "./components/pages/home";
 
 const App: React.FC = () => {
   return (
     <Router>
       <Switch>
         <Route path="/gmb" component={mybusiness} exact />
-        <Route path="/" component={test} exact />
+        <Route path="/" component={home} exact />
       </Switch>
     </Router>
   );

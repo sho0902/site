@@ -203,7 +203,7 @@ const GenericTemplate: React.FC<GenericTemplateProps> = ({
               noWrap
               className={classes.title}
             >
-              React Test
+              React
             </Typography>
             {darkMode ? (
               <IconButton color="inherit" onClick={handleDarkModeOff}>
@@ -235,7 +235,7 @@ const GenericTemplate: React.FC<GenericTemplateProps> = ({
                 <ListItemIcon>
                   <HomeIcon />
                 </ListItemIcon>
-                <ListItemText primary="Test" />
+                <ListItemText primary="Home" />
               </ListItem>
             </Link>
             <Link to="/gmb" className={classes.link}>
@@ -243,7 +243,7 @@ const GenericTemplate: React.FC<GenericTemplateProps> = ({
                 <ListItemIcon>
                   <MapIcon />
                 </ListItemIcon>
-                <ListItemText primary="MyBusiness" />
+                <ListItemText primary="Map" />
               </ListItem>
             </Link>
           </List>
